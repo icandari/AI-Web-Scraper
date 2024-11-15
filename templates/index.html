@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Course Scraper</title>
+</head>
+<body>
+    <h1>AI-Powered Course Scraper</h1>
+    <label for="major-url">Major Program URL:</label>
+    <input type="text" id="major-url" placeholder="Enter Major URL" />
+    <br />
+    <label for="minor1-url">Minor 1 Program URL:</label>
+    <input type="text" id="minor1-url" placeholder="Enter Minor 1 URL" />
+    <br />
+    <label for="minor2-url">Minor 2 Program URL:</label>
+    <input type="text" id="minor2-url" placeholder="Enter Minor 2 URL" />
+    <br />
+    <button id="submit">Submit</button>
+
+    <h2>Raw Scraped Data</h2>
+    <pre id="result"></pre>
+
+    <script>
+        document.getElementById("submit").addEventListener("click", async () => {
+            const majorUrl = document.getElementById("major-url").value.trim();
+            const minor1Url = document.getElementById("minor1-url").value.trim();
+            const minor2Url = document.getElementById("minor2-url").value.trim();
+
+            if (!majorUrl || !minor1Url || !minor2Url) {
+                alert("Please enter all three URLs.");
+                return;
+            }
+
+            const response = await fetch("/api/scrape", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    majorUrl,
+                    minor1Url,
+                    minor2Url
+                }),
+            });
+
+            const data = await response.json();
+            document.getElementById("result").textContent = JSON.stringify(data, null, 2);
+        });
+    </script>
+</body>
+</html>
